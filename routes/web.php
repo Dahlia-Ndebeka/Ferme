@@ -46,21 +46,34 @@ Route::get('/admin', [AdminController::class, 'dashboard']);
 Route::get('/commandes', [AdminController::class, 'commandes']);
 
 Route::get('/ajoutercategorie', [CategoryController::class, 'ajoutercategorie']);
-// Route::post('/sauvercategorie', [CategoryController::class, 'sauvercategorie']);
-Route::post('/sauvercategorie', 'CategoryController@sauvercategorie');
+Route::post('/sauvercategorie', [CategoryController::class, 'sauvercategorie']);
 Route::get('/categories', [CategoryController::class, 'categories']);
+Route::get('/edit_categorie/{id}', [CategoryController::class, 'edit_categorie']);
+Route::post('/modifiercategorie', [CategoryController::class, 'modifiercategorie']);
+Route::get('/supprimercategorie/{id}', [CategoryController::class, 'supprimercategorie']);
 
 
 Route::get('/ajouterproduit', [ProductController::class, 'ajouterproduit']);
 Route::post('/sauverproduit', [ProductController::class, 'sauverproduit']);
-// Route::post('/sauverproduit', 'ProductController@sauverproduit');
 Route::get('/produits', [ProductController::class, 'produits']);
+Route::get('/edit_produit/{id}', [ProductController::class, 'edit_produit']);
+Route::post('/modifierproduit', [ProductController::class, 'modifierproduit']);
+Route::get('/supprimerproduit/{id}', [ProductController::class, 'supprimerproduit']);
+Route::get('/activer_produit/{id}', [ProductController::class, 'activer_produit']);
+Route::get('/desactiver_produit/{id}', [ProductController::class, 'desactiver_produit']);
 
 
 Route::get('/ajouterslider', [SliderController::class, 'ajouterslider']);
 Route::post('/sauverslider', [SliderController::class, 'sauverslider']);
-// Route::post('/sauverslider', 'ProductController@sauverslider');
 Route::get('/sliders', [SliderController::class, 'sliders']);
+Route::get('/edit_slider/{id}', [SliderController::class, 'edit_slider']);
+Route::post('/modifierslider', [SliderController::class, 'modifierslider']);
+Route::get('/supprimerslider/{id}', [SliderController::class, 'supprimerslider']);
+Route::get('/activer_slider/{id}', [SliderController::class, 'activer_slider']);
+Route::get('/desactiver_slider/{id}', [SliderController::class, 'desactiver_slider']);
+
+
+
 
 
 

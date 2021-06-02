@@ -3,11 +3,16 @@
 @section('title')
     Categories
 @endsection
-
+{{Form::hidden('', $increment = 1)}}
 @section('contenu')
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Categories</h4>
+                    @if (Session::has('status'))
+                        <div class="alert alert-success">
+                            {{Session::get('status')}}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
@@ -20,17 +25,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>2012/08/03</td>
-                                            {{-- <td>
-                                                <label class="badge badge-info">On hold</label>
-                                            </td> --}}
-                                            <td>
-                                                <button class="btn btn-outline-primary">Edit</button>
-                                                <button class="btn btn-outline-danger">Delete</button>
-                                            </td>
-                                        </tr>
+                                        @foreach ($categories as $category)
+                                            <tr>
+                                                <td>{{$increment}}</td>
+                                                <td>{{$category->category_name}}</td>
+                                                {{-- <td>
+                                                    <label class="badge badge-info">On hold</label>
+                                                </td> --}}
+                                                 <td>
+                                                    <button class="btn btn-outline-primary" onclick="window.location = '{{URL::to('/edit_categorie/' . $category->id)}}' ">Edit</button>
+                                                    <button class="btn btn-outline-danger"><a href="{{URL::to('/supprimercategorie/' . $category->id)}}" id="delete" >Delete</a></button>
+                                                </td>
+                                            </tr>
+                                            {{Form::hidden('', $increment = $increment + 1)}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

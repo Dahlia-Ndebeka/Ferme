@@ -1,17 +1,17 @@
 @extends('layouts.appadmin')
 
 @section('title')
-    Ajouter Slider
+    Edit categorie
 @endsection
 
 @section('contenu')
     
-
             <div class="row grid-margin">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ajouter Slider</h4>
+                            <h4 class="card-title">Edit Categorie</h4>
+
                             @if (Session::has('status'))
                                 <div class="alert alert-success">
                                     {{Session::get('status')}}
@@ -26,29 +26,22 @@
                                     </ul>
                                 </div>
                             @endif
-                            {!!Form::open(['action' => 'SliderController@sauverslider', 'method' => 'POST', 'class' => 'cmxform', 'id' => 'commentForm', 'enctype' => 'multipart/form-data'])!!}
+
+                            {!!Form::open(['action' => 'CategoryController@modifiercategorie', 'method' => 'POST', 'class' => 'cmxform', 'id' => 'commentForm'])!!}
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
-                                    {{Form::label('', 'Description one', ['for' => 'pname'])}}
-                                    {{Form::text('description1', '', ['id' => 'pname', 'class' => 'form-control'])}}
+                                    {{Form::hidden('id', $categorie->id)}}
+                                    {{Form::label('', 'Nom de la categorie', ['for' => 'cname'])}}
+                                    {{Form::text('category_name', $categorie->category_name , ['id' => 'cname', 'class' => 'form-control'])}}
                                 </div>
 
-                                <div class="form-group">
-                                    {{Form::label('', 'Description two', ['for' => 'pprice'])}}
-                                    {{Form::text('description2', '', ['id' => 'pprice', 'class' => 'form-control'])}}
-                                </div>
-
-                                <div class="form-group">
-                                    {{Form::label('', 'Image du produit', ['for' => 'pimg'])}}
-                                    {{Form::file('slider_image',  ['id' => 'pimg', 'class' => 'form-control'])}}
-                                </div>
-
-                                {{Form::submit('Ajouter', ['class' => 'btn btn-primary'])}}
+                                {{Form::submit('Modifier', ['class' => 'btn btn-primary'])}}
 
                             {!!Form::close()!!}
+
                         </div>
-                    </div>
+                </div>
                 </div>
             </div>
 

@@ -26,17 +26,18 @@
                                     </ul>
                                 </div>
                             @endif
-                            {!!Form::open(['action' => 'SliderController@sauverslider', 'method' => 'POST', 'class' => 'cmxform', 'id' => 'commentForm', 'enctype' => 'multipart/form-data'])!!}
+                            {!!Form::open(['action' => 'SliderController@modifierslider', 'method' => 'POST', 'class' => 'cmxform', 'id' => 'commentForm', 'enctype' => 'multipart/form-data'])!!}
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
+                                    {{Form::hidden('id', $slider->id)}}
                                     {{Form::label('', 'Description one', ['for' => 'pname'])}}
-                                    {{Form::text('description1', '', ['id' => 'pname', 'class' => 'form-control'])}}
+                                    {{Form::text('description1', $slider->description1, ['id' => 'pname', 'class' => 'form-control'])}}
                                 </div>
 
                                 <div class="form-group">
                                     {{Form::label('', 'Description two', ['for' => 'pprice'])}}
-                                    {{Form::text('description2', '', ['id' => 'pprice', 'class' => 'form-control'])}}
+                                    {{Form::text('description2', $slider->description2, ['id' => 'pprice', 'class' => 'form-control'])}}
                                 </div>
 
                                 <div class="form-group">
@@ -44,7 +45,7 @@
                                     {{Form::file('slider_image',  ['id' => 'pimg', 'class' => 'form-control'])}}
                                 </div>
 
-                                {{Form::submit('Ajouter', ['class' => 'btn btn-primary'])}}
+                                {{Form::submit('Modifier', ['class' => 'btn btn-primary'])}}
 
                             {!!Form::close()!!}
                         </div>
