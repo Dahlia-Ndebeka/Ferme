@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Cart;
+use Session;
 
 class ClientController extends Controller
 {
@@ -43,10 +45,60 @@ class ClientController extends Controller
     public function ajouter_au_panier($id){
 
         $product = Product::find($id);
+
+        $oldCart = Session::has('cart')? Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $id);
+        Session::put('cart', $cart);
+
+        // dd(Session::get('cart'));
+        return redirect('/shop');
     }
 
     public function panier(){
-        return view('client.cart');
+
+        if(!Session::has('cart')){
+
+            return view('client.cart');
+        }
+
+        $oldCart = Session::has('cart')? Session::get('cart'):null;
+
+        $cart = new Cart($oldCart);
+
+        return view('client.cart', ['products' => $cart->items]);
+    }
+
+
+    public function modifier_panier(Request $request, $id){
+
+        $oldCart = Session::has('cart')? Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->updateQty($id, $request->quantity);
+        Session::put('cart', $cart);
+
+        //dd(Session::get('cart'));
+        return redirect('/panier');
+    }
+
+
+    public function retirer_produit($id){
+
+        $oldCart = Session::has('cart')? Session::get('cart'):null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+       
+        if(count($cart->items) > 0){
+            Session::put('cart', $cart);
+        }
+        else{
+            Session::forget('cart');
+        }
+
+        //dd(Session::get('cart'));
+        return redirect('/panier');
+
+
     }
 
 
