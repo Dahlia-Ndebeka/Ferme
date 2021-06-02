@@ -38,6 +38,10 @@ Route::get('/client_login', [ClientController::class, 'client_login']);
 
 Route::get('/signup', [ClientController::class, 'signup']);
 
+Route::get('/select_par_cat/{name}', [ClientController::class, 'select_par_cat']);
+
+Route::get('/ajouter_au_panier/{id}', [ClientController::class, 'ajouter_au_panier']);
+
 
 
 // Routes concernant la partie administrateur
