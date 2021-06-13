@@ -19,89 +19,62 @@
 		<div class="container">
 		  <div class="row justify-content-center">
 			<div class="col-xl-7 ftco-animate">
-						  <form action="#" class="billing-form">
-							  <h3 class="mb-4 billing-heading">Billing Details</h3>
+				<form action="{{url('/payer')}}" method="POST" id="checkout-form" class="billing-form">
+					{{ csrf_field() }}
+					<h3 class="mb-4 billing-heading">Billing Details</h3>
 					<div class="row align-items-end">
-						<div class="col-md-6">
-					  <div class="form-group">
-						  <label for="firstname">Firt Name</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						  <label for="lastname">Last Name</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-				  </div>
-				  <div class="w-100"></div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="name">Full Name</label>
+								<input type="text" name="name" class="form-control" placeholder="">
+					  		</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="adress">Adress</label>
+								<input type="text" name="adress" class="form-control" placeholder="">
+							</div>
+				  		</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="card-name">Name on Card</label>
+								<input type="text" name="card_name" id="card-name" class="form-control" placeholder="">
+							</div>
+				  		</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="card-number">Number</label>
+								<input type="number" name="card_number" id="card-number" class="form-control" placeholder="">
+							</div>
+				  		</div>
+						  <div class="col-md-6">
+							<div class="form-group">
+								<label for="card-expiry-month">Expiration Month</label>
+								<input type="text" name="card_expiry_month" id="card-expiry-month" class="form-control" placeholder="">
+							</div>
+				  		</div>
+						  <div class="col-md-6">
+							<div class="form-group">
+								<label for="card-expiry-year">Expiration Year</label>
+								<input type="text" name="card_expiry_year" id="card-expiry-year" class="form-control" placeholder="">
+							</div>
+				  		</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="card-cvc">CVC</label>
+								<input type="number" name="card_cvc" id="card-cvc" class="form-control" placeholder="">
+							</div>
+				  		</div>
+
 					  <div class="col-md-12">
-						  <div class="form-group">
-							  <label for="country">State / Country</label>
-							  <div class="select-wrap">
-							<div class="icon"><span class="ion-ios-arrow-down"></span></div>
-							<select name="" id="" class="form-control">
-								<option value="">France</option>
-							  <option value="">Italy</option>
-							  <option value="">Philippines</option>
-							  <option value="">South Korea</option>
-							  <option value="">Hongkong</option>
-							  <option value="">Japan</option>
-							</select>
-						  </div>
-						  </div>
-					  </div>
-					  <div class="w-100"></div>
-					  <div class="col-md-6">
-						  <div class="form-group">
-						  <label for="streetaddress">Street Address</label>
-						<input type="text" class="form-control" placeholder="House number and street name">
-					  </div>
-					  </div>
-					  <div class="col-md-6">
-						  <div class="form-group">
-						<input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
-					  </div>
-					  </div>
-					  <div class="w-100"></div>
-					  <div class="col-md-6">
-						  <div class="form-group">
-						  <label for="towncity">Town / City</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-					  </div>
-					  <div class="col-md-6">
-						  <div class="form-group">
-							  <label for="postcodezip">Postcode / ZIP *</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-					  </div>
-					  <div class="w-100"></div>
-					  <div class="col-md-6">
-					  <div class="form-group">
-						  <label for="phone">Phone</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-					</div>
-					<div class="col-md-6">
-					  <div class="form-group">
-						  <label for="emailaddress">Email Address</label>
-						<input type="text" class="form-control" placeholder="">
-					  </div>
-				  </div>
-				  <div class="w-100"></div>
-				  <div class="col-md-12">
-					  <div class="form-group mt-4">
-										  <div class="radio">
-											<label class="mr-3"><input type="radio" name="optradio"> Create an Account? </label>
-											<label><input type="radio" name="optradio"> Ship to different address</label>
-										  </div>
-									  </div>
-				  </div>
+						<div class="form-group">
+							<input type="submit" value="Acheter" class="btn btn-primary">
+						</div>
+				  	</div>
 				  </div>
 				</form><!-- END -->
-					  </div>
-					  <div class="col-xl-5">
+			</div>
+			<div class="col-xl-5">
 				<div class="row mt-5 pt-3">
 					<div class="col-md-12 d-flex mb-5">
 						<div class="cart-detail cart-total p-3 p-md-4">
@@ -121,7 +94,7 @@
 								  <hr>
 								  <p class="d-flex total-price">
 									  <span>Total</span>
-									  <span>$17.60</span>
+									  <span>{{Session::get('cart')->totalPrice}} FCFA</span>
 								  </p>
 								  </div>
 					</div>
@@ -168,43 +141,46 @@
 	@endsection
 		
 	@section('scripts')
+
+	<script src="https://js.stripe.com/v2/"></script>
+	<script src="src/js/checkout.js"></script>
 		
-		<script>
-			$(document).ready(function(){
+	<script>
+		$(document).ready(function(){
 
-			var quantitiy=0;
-			$('.quantity-right-plus').click(function(e){
-					
-					// Stop acting like a button
-					e.preventDefault();
-					// Get the field name
-					var quantity = parseInt($('#quantity').val());
-					
-					// If is not undefined
-						
-						$('#quantity').val(quantity + 1);
-
-					
-						// Increment
-					
-				});
-
-				$('.quantity-left-minus').click(function(e){
-					// Stop acting like a button
-					e.preventDefault();
-					// Get the field name
-					var quantity = parseInt($('#quantity').val());
-					
-					// If is not undefined
+		var quantitiy=0;
+		$('.quantity-right-plus').click(function(e){
 				
-						// Increment
-						if(quantity>0){
-						$('#quantity').val(quantity - 1);
-						}
-				});
+				// Stop acting like a button
+				e.preventDefault();
+				// Get the field name
+				var quantity = parseInt($('#quantity').val());
+				
+				// If is not undefined
+					
+					$('#quantity').val(quantity + 1);
+
+				
+					// Increment
 				
 			});
-		</script>
+
+			$('.quantity-left-minus').click(function(e){
+				// Stop acting like a button
+				e.preventDefault();
+				// Get the field name
+				var quantity = parseInt($('#quantity').val());
+				
+				// If is not undefined
+			
+					// Increment
+					if(quantity>0){
+					$('#quantity').val(quantity - 1);
+					}
+			});
+			
+		});
+	</script>
 
 	@endsection
 

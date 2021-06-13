@@ -46,6 +46,8 @@ Route::post('/modifier_qty/{id}', [ClientController::class, 'modifier_panier']);
 
 Route::get('/retirer_produit/{id}', [ClientController::class, 'retirer_produit']);
 
+Route::post('/payer', [ClientController::class, 'payer']);
+
 
 
 

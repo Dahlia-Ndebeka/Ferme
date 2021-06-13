@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
 use Session;
+use Stripe\Charge;
+use Stripe\Stripe;
 
 class ClientController extends Controller
 {
@@ -85,7 +87,9 @@ class ClientController extends Controller
     public function retirer_produit($id){
 
         $oldCart = Session::has('cart')? Session::get('cart'):null;
+
         $cart = new Cart($oldCart);
+
         $cart->removeItem($id);
        
         if(count($cart->items) > 0){
@@ -103,7 +107,55 @@ class ClientController extends Controller
 
 
     public function paiement(){
+
+        if(!Session::has('cart')){
+
+            return view('client.cart');
+        }
+        
         return view('client.checkout');
+    }
+
+
+    public function payer(Request $request){
+
+        if(!Session::has('cart')){
+
+            return view('client.cart');
+        }
+
+        $oldCart = Session::has('cart')? Session::get('cart'):null;
+
+        $cart = new Cart($oldCart);
+
+        Stripe::setApiKey('sk_test_51J1zXbEYCaqI8yeWg7cqnSCx9k9baHrTwG5AG1btiBUDXaimOwURc8lJPr9b6aK0XwYKuUI6XuuCIjfWUpgpTu1B00G4UEXBPt');
+
+        try{
+
+            $charge = Charge::create(array(
+                "amount" => $cart->totalPrice * 100,
+                "currency" => "usd",
+                "source" => $request->input('stripeToken'), // obtainded with Stripe.js
+                "description" => "Test Charge"
+            ));
+
+          
+
+        } catch(\Exception $e){
+
+            Session::put('error', $e->getMessage());
+
+            // return redirect('/checkout');
+            return redirect('/paiement');
+            
+        }
+
+        Session::forget('cart');
+
+        Session::put('success', 'Purchase accomplished successfully !');
+
+        return redirect('/panier')->with('status', 'Achat effectue avec succes');
+
     }
 
 
