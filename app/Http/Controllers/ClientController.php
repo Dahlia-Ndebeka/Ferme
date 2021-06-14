@@ -7,6 +7,7 @@ use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Order;
 use Session;
 use Stripe\Charge;
 use Stripe\Stripe;
@@ -139,13 +140,20 @@ class ClientController extends Controller
                 "description" => "Test Charge"
             ));
 
-          
+          $order = new Order();
+
+          $order->nom = $request->input('name');
+          $order->adresse = $request->input('address');
+          $order->panier = serialize($cart);
+          $order->paiement_id = $charge->id;
+
+          $order->save();
+
 
         } catch(\Exception $e){
 
             Session::put('error', $e->getMessage());
 
-            // return redirect('/checkout');
             return redirect('/paiement');
             
         }

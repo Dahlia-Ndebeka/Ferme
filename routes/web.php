@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +50,6 @@ Route::get('/retirer_produit/{id}', [ClientController::class, 'retirer_produit']
 Route::post('/payer', [ClientController::class, 'payer']);
 
 
-
-
 // Routes concernant la partie administrateur
 
 Route::get('/admin', [AdminController::class, 'dashboard']);
@@ -82,6 +81,9 @@ Route::post('/modifierslider', [SliderController::class, 'modifierslider']);
 Route::get('/supprimerslider/{id}', [SliderController::class, 'supprimerslider']);
 Route::get('/activer_slider/{id}', [SliderController::class, 'activer_slider']);
 Route::get('/desactiver_slider/{id}', [SliderController::class, 'desactiver_slider']);
+
+
+Route::get('/voir_pdf/{id}', [PdfController::class, 'voir_pdf']);
 
 
 

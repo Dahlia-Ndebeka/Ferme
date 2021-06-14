@@ -3,12 +3,18 @@
 @section('title')
     Commandes
 @endsection
-
+{{Form::hidden('', $increment = 1)}}
 @section('contenu')
 
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Commandes</h4>
+                    @if (Session::has('error'))
+                        <div class="alert alert-danger">
+                            {{Session::get('error')}}
+                            {{Session::put('error', null)}}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
@@ -24,16 +30,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Image bannane</td>
-                                            <td>Bannane</td>
-                                            <td>Fruit</td>
-                                            <td>250 FCFA</td>
-                                            <td>
-                                                <button class="btn btn-outline-primary">View</button>
-                                            </td>
-                                        </tr>
+                                        @foreach ($orders as $order)
+                                            <tr>
+                                                <td>{{$increment}}</td>
+                                                <td>{{$order->nom}}</td>
+                                                <td>{{$order->adresse}}</td>
+                                                <td>
+                                                    @foreach ($order->panier->items as $item)
+                                                        {{$item['product_name']}}
+                                                    @endforeach
+                                                </td>
+                                                <td>{{$order->paiement_id}}</td>
+                                                <td>
+                                                    <button onclick="window.location = '{{URL::to('/voir_pdf/' . $order->id)}}' " class="btn btn-outline-primary">View</button>
+                                                </td>
+                                            </tr>
+                                            {{Form::hidden('', $increment = $increment + 1)}}
+                                        @endforeach
+                                        
                                     </tbody>
                                 </table>
                             </div>
