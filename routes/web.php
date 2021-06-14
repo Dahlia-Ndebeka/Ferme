@@ -49,6 +49,12 @@ Route::get('/retirer_produit/{id}', [ClientController::class, 'retirer_produit']
 
 Route::post('/payer', [ClientController::class, 'payer']);
 
+Route::post('/creer_compte', [ClientController::class, 'creer_compte']);
+
+Route::post('/acceder_compte', [ClientController::class, 'acceder_compte']);
+
+Route::get('/logout', [ClientController::class, 'logout']);
+
 
 // Routes concernant la partie administrateur
 

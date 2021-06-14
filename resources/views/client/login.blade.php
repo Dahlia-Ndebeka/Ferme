@@ -32,7 +32,23 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('frontend/login/images/bg-01.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				@if (Session::has('status'))
+						<div class="alert alert-danger">
+							{{Session::get('status')}}
+						</div>
+					@endif
+					@if (count($errors) > 0)
+						<div class="alert alert-danger">
+							<ul>
+								@foreach($errors->all() as $error)
+									<li>{{$error}}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+				<form action="{{'/acceder_compte'}}" method="POST" class="login100-form validate-form"> 
+					{{ csrf_field() }}
+
 					<a href="{{URL::to('/')}}">
 						<span class="login100-form-logo">
 							<i class="zmdi zmdi-landscape"></i>
@@ -43,13 +59,13 @@
 						Log in
 					</span>
 
-					<div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input class="input100" type="text" name="username" placeholder="Username">
+					<div class="wrap-input100 validate-input" data-validate = "Enter email">
+						<input class="input100" type="email" name="email" placeholder="Email">
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="password" placeholder="Password">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 

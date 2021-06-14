@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Client;
 use Session;
 use Stripe\Charge;
 use Stripe\Stripe;
@@ -109,6 +111,11 @@ class ClientController extends Controller
 
     public function paiement(){
 
+        if(!Session::has('client')){
+
+            return view('client.login');
+        }
+
         if(!Session::has('cart')){
 
             return view('client.cart');
@@ -164,6 +171,63 @@ class ClientController extends Controller
 
         return redirect('/panier')->with('status', 'Achat effectue avec succes');
 
+    }
+
+
+    public function creer_compte(Request $request){
+
+        $this->validate($request, [
+            'email' => 'email|required|unique:clients',
+            'password' => 'required |min:4'
+            ]
+        );
+
+        $client = new CLient();
+
+        $client->email = $request->input('email');
+        $client->password = bcrypt($request->input('password'));
+
+        $client->save();
+
+        return back()->with('status', 'Votre compte a ete cree avec succes');
+
+    }
+
+
+    public function acceder_compte(Request $request){
+
+        $this->validate($request, [
+            'email' => 'email|required',
+            'password' => 'required |min:4'
+            ]
+        );
+
+        $client = Client::where('email', $request->input('email'))->first();
+
+        if ($client) {
+            if (Hash::check($request->input('password'),  $client->password) ) {
+                
+                Session::put('client', $client);
+                return redirect('/shop');
+
+            } else {
+
+                return back()->with('status', 'Mot de passe ou email incorrect');
+            }
+            
+        } else {
+
+            return back()->with('status', 'vous n\'avez pas de compte');
+        }
+
+    }
+
+
+    public function logout(){
+
+        Session::forget('client');
+
+        return back();
     }
 
 
