@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Category;
@@ -147,15 +149,31 @@ class ClientController extends Controller
                 "description" => "Test Charge"
             ));
 
-          $order = new Order();
+            $order = new Order();
 
-          $order->nom = $request->input('name');
-          $order->adresse = $request->input('address');
-          $order->panier = serialize($cart);
-          $order->paiement_id = $charge->id;
+            $order->nom = $request->input('name');
+            $order->adresse = $request->input('address');
+            $order->panier = serialize($cart);
+            $order->paiement_id = $charge->id;
 
-          $order->save();
+            $order->save();
 
+            $orders = Order::where('paiement_id', $charge->id)->get();
+
+            $orders->transform(
+
+                function($order, $key){
+
+                    $order->panier = unserialize($order->panier);
+                    return $order;
+
+                }
+            );
+
+
+            $email = Session::get('client')->email;
+
+            Mail::to($email)->send(new SendMail($orders));
 
         } catch(\Exception $e){
 
